@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import Player from '../components/Player'
 import $ from 'jquery'
 
+import { Datatype } from '../app/page'
+
 const Shot = styled.div`
   width: 100vw;
   height: 100vh;
@@ -19,7 +21,7 @@ const Shot = styled.div`
 `
 
 type PropsType = {
-  data: any[]
+  data: Datatype[]
 }
 
 const Home: React.FC<PropsType> = ({ data }) => {
@@ -53,7 +55,7 @@ const Home: React.FC<PropsType> = ({ data }) => {
 
   useEffect(() => {
     console.log('currentIndex:', currentIndex)
-    data.forEach((item: any, index: number) => {
+    data.forEach((item: Datatype, index: number) => {
       item.isPlay = index == currentIndex ? true : false
     })
 
@@ -69,7 +71,7 @@ const Home: React.FC<PropsType> = ({ data }) => {
 
   return (
     <main ref={mainRef} style={{ overflow: 'auto' }}>
-      {data?.map((item: any, index: number) => (
+      {data?.map((item: Datatype, index: number) => (
         <Shot
           ref={
             shotsRef.current
@@ -82,6 +84,7 @@ const Home: React.FC<PropsType> = ({ data }) => {
             id={item.title}
             url={item.play_url}
             isPlay={index == currentIndex}
+            cover={item.cover}
           />
         </Shot>
       ))}

@@ -5,9 +5,10 @@ interface IVideoPlayerProps {
   id: string
   url: string
   isPlay: boolean
+  cover: string
 }
 
-const Player: React.FC<IVideoPlayerProps> = ({ id, url, isPlay }) => {
+const Player: React.FC<IVideoPlayerProps> = ({ id, url, isPlay, cover }) => {
   let videoNode: any = React.useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const Player: React.FC<IVideoPlayerProps> = ({ id, url, isPlay }) => {
     if (isPlay) videoNode.current.play()
   }, [isPlay, videoNode])
 
-  return <video ref={videoNode} id={id} controls muted></video>
+  return <video ref={videoNode} id={id} controls muted poster={cover} />
 }
 
 export default Player
