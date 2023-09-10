@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, createRef } from 'react'
 import styled from 'styled-components'
 import Player from '../components/Player'
+import $ from 'jquery'
 
 const Shot = styled.div`
   width: 100vw;
@@ -24,6 +25,7 @@ type PropsType = {
 const Home: React.FC<PropsType> = ({ data }) => {
   const [currentIndex, setCurrentIndex] = useState<number | null>(0)
   const shotsRef = useRef(data.map(() => createRef()))
+  const mainRef = useRef<HTMLDivElement>(null)
 
   const handleScroll = () => {
     const scroll = window.scrollY
@@ -32,7 +34,7 @@ const Home: React.FC<PropsType> = ({ data }) => {
       const offsetTop = (ref?.current as HTMLBaseElement)?.offsetTop
       if (scroll == 0) {
         newId = 0
-      } else if (scroll == document.body.clientWidth) {
+      } else if (scroll == document.body.clientHeight) {
         newId = data.length - 1
       } else if (scroll > offsetTop - window.innerHeight / 2) {
         newId = index
@@ -55,19 +57,18 @@ const Home: React.FC<PropsType> = ({ data }) => {
       item.isPlay = index == currentIndex ? true : false
     })
 
-    const timer = setTimeout(() => {
-      if (currentIndex !== null) {
-        ;(shotsRef.current[currentIndex].current as any).scrollIntoView({
-          behavior: 'smooth'
-        })
-      }
-    }, 500)
-
-    return () => clearTimeout(timer)
+    if (currentIndex !== null) {
+      $([document.documentElement, document.body]).animate(
+        {
+          scrollTop: currentIndex * window.innerHeight
+        },
+        'linear'
+      )
+    }
   }, [data, currentIndex])
 
   return (
-    <main>
+    <main ref={mainRef} style={{ overflow: 'auto' }}>
       {data?.map((item: any, index: number) => (
         <Shot
           ref={
