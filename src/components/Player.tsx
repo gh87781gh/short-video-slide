@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react'
-import videojs from 'video.js'
-import 'video.js/dist/video-js.css'
 import Hls from 'hls.js'
 
 interface IVideoPlayerProps {
@@ -34,12 +32,8 @@ const Player: React.FC<IVideoPlayerProps> = ({ id, url, isPlay }) => {
   }, [])
 
   useEffect(() => {
-    console.log('isPlay:', isPlay)
-    console.log('videoNode:', videoNode)
-
-    if (videoNode.current != null) {
-      isPlay ? videoNode.current.play() : videoNode.current.pause()
-    }
+    videoNode.current.pause()
+    if (isPlay) videoNode.current.play()
   }, [isPlay, videoNode])
 
   return <video ref={videoNode} id={id} controls muted></video>

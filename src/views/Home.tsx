@@ -28,8 +28,8 @@ const Home: React.FC<PropsType> = ({ data }) => {
   const handleScroll = () => {
     const scroll = window.scrollY
     let newId = currentIndex
-    shotsRef.current.forEach((ref, index, ary) => {
-      const offsetTop = (ary[index]?.current as HTMLBaseElement)?.offsetTop
+    shotsRef.current.forEach((ref, index) => {
+      const offsetTop = (ref?.current as HTMLBaseElement)?.offsetTop
       if (scroll == 0) {
         newId = 0
       } else if (scroll == document.body.clientWidth) {
@@ -50,9 +50,20 @@ const Home: React.FC<PropsType> = ({ data }) => {
   }, [])
 
   useEffect(() => {
+    console.log('currentIndex:', currentIndex)
     data.forEach((item: any, index: number) => {
       item.isPlay = index == currentIndex ? true : false
     })
+
+    const timer = setTimeout(() => {
+      if (currentIndex !== null) {
+        ;(shotsRef.current[currentIndex].current as any).scrollIntoView({
+          behavior: 'smooth'
+        })
+      }
+    }, 500)
+
+    return () => clearTimeout(timer)
   }, [data, currentIndex])
 
   return (
